@@ -13,6 +13,7 @@
         <color name="text_dark">#F9FAFB</color>
         <color name="muted_light">#6B7280</color>
         <color name="muted_dark">#9CA3AF</color>
+        <color name="red">#F44336</color>
 
 
 </resources>

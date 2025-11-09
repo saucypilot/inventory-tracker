@@ -12,8 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-// Unnecessary imports removed for clarity (Button, EditText) if not used here
-
 public class MainActivity extends AppCompatActivity {
 
     // You can remove @SuppressLint("MissingInflatedId") if you add the ID in the XML.
@@ -23,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_screen);
 
         // This part handles system bars padding, leave it as is.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -34,15 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
         // --- Start of New Code to Add ---
 
-        // 1. Find the TextView for creating an account by its ID.
-        //    Make sure you have added android:id="@+id/createAccountLink" to the TextView in activity_main.xml
+        // Find the TextView for creating an account by its ID.
         TextView createAccountLink = findViewById(R.id.createAccountLink);
 
-        // 2. Set an OnClickListener to listen for clicks.
         createAccountLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 3. Create an Intent to start the CreateAccountActivity.
+
                 Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
                 startActivity(intent);
             }

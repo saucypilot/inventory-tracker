@@ -17,5 +17,13 @@ public class UserActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
+
+        //Search button
+        Button userSearchButton = findViewById(R.id.btnUserSearch);
+        userSearchButton.setOnClickListener(v -> {
+            // Create an Intent to open SearchActivity when the button is clicked.
+            Intent intent = new Intent(UserActivity.this, SearchActivity.class);
+            startActivity(intent);
+        });
     }
 }

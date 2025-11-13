@@ -163,8 +163,6 @@ public class AdminActivity extends AppCompatActivity {
         Button btnGoEdit = findViewById(R.id.btnEdit);
         Button btnGoDelete = findViewById(R.id.btnDelete);
         Button btnSignOut = findViewById(R.id.btnSignOut);
-        Button btnGoSearch = findViewById(R.id.btnSearch);
-        Button viewDataButton = findViewById(R.id.btnViewData);
 
         btnGoAdd.setOnClickListener(v ->
                 startActivity(new Intent(this, AddInv.class)));
@@ -175,9 +173,6 @@ public class AdminActivity extends AppCompatActivity {
         btnGoDelete.setOnClickListener(v ->
                 startActivity(new Intent(this, DeleteInv.class)));
 
-        btnGoSearch.setOnClickListener(v ->
-                startActivity(new Intent(this, SearchActivity.class)));
-
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
 
@@ -185,12 +180,7 @@ public class AdminActivity extends AppCompatActivity {
             // Clear the back stack so user can't return to Admin with back button
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
-            finish(); //just in case
-        });
-
-        viewDataButton.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminActivity.this, DashboardActivity.class);
-            startActivity(intent);
+            finish(); // just in case
         });
     }
 }

@@ -36,21 +36,7 @@
             android:id="@+id/btnDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete Item"
-            android:layout_marginBottom="12dp" />
-
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search Item"
-            android:layout_marginBottom="12dp" />
-
-        <Button
-            android:id="@+id/btnViewData"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Checkout/Return Data" />
+            android:text="Delete Item" />
 
         <Button
             android:id="@+id/btnSignOut"
@@ -58,8 +44,92 @@
             android:layout_height="wrap_content"
             android:text="Sign Out"
             android:backgroundTint="@color/red"
-            android:layout_marginTop="200dp" />
+            android:layout_marginTop="250dp" />
 
 
     </LinearLayout>
 </ScrollView>
+
+
+
+
+
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:id="@+id/main"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:gravity="center"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="24dp">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/etItemId"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:autofillHints="ID"-->
+<!--            android:inputType="number"-->
+<!--            android:hint="ID" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/etName"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="text"-->
+<!--            android:autofillHints="name"-->
+<!--            android:hint="Name" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/etDescription"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Description" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/etCategory"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Category" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/Status"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="status" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/QrCode"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="QR Code" />-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="3"-->
+<!--            android:paddingTop="12dp">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btnAdd"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Add" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btnUpdate"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Edit" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btnDelete"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Delete" />-->
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->

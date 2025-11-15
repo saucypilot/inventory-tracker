@@ -1,22 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:background="@color/background_light">
+
+    <TextView
+        android:id="@+id/appTitle3"
+        android:layout_width="295dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/abril_fatface"
+        android:text="Delete Inventory Item"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="370dp"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="106dp" />
 
     <EditText
         android:id="@+id/etItemId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="385dp"
+        android:layout_height="46dp"
+        android:background="@drawable/edittext_bg"
         android:hint="ItemID (required)"
-        android:inputType="text" />
+        android:inputType="text"
+        android:padding="12dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="124dp" />
 
     <Button
         android:id="@+id/btnDelete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="378dp"
+        android:layout_height="43dp"
         android:text="Delete"
-        android:layout_marginTop="12dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="190dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

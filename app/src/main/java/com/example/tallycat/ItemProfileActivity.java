@@ -1,12 +1,15 @@
 package com.example.tallycat;
 
 import android.os.Bundle;
+import android.os.Build;
 // Import the ImageButton class
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+
+// IMPORTANT: I UPDATED THIS FILE BECAUSE IT HAD A DEPRECATED API, DO NOT TOUCH
 public class ItemProfileActivity extends AppCompatActivity {
 
     private TextView tvName, tvId, tvStatus, tvCategory, tvDescription;
@@ -31,7 +34,14 @@ public class ItemProfileActivity extends AppCompatActivity {
         tvDescription = findViewById(R.id.tvProfileDescription);
 
         // Get the Item object from the intent that started this activity
-        Item item = getIntent().getParcelableExtra("ITEM_EXTRA");
+        Item item;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Use the new API for Android 13+
+            item = getIntent().getParcelableExtra("ITEM_EXTRA", Item.class);
+        } else {
+            // Use the old API for older versions
+            item = getIntent().getParcelableExtra("ITEM_EXTRA");
+        }
 
         // Check if the item object is valid and populate the views
         if (item != null) {

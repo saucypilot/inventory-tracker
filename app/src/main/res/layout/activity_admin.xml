@@ -1,135 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_light">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background_light"
         android:orientation="vertical"
         android:padding="20dp">
 
         <TextView
             android:id="@+id/admin"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/abril_fatface"
+            android:paddingBottom="12dp"
             android:text="Admin"
+            android:textColor="#000000"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:paddingBottom="12dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/admin" />
 
         <Button
             android:id="@+id/btnAdd"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#00000000"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="12dp"
             android:text="Add Item"
-            android:layout_marginBottom="12dp" />
+            android:textAlignment="viewStart"
+            android:textColor="#050505"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="17dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAdd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnAdd"
+            app:srcCompat="@drawable/arrow" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
 
         <Button
             android:id="@+id/btnEdit"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#00FFFFFF"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="12dp"
             android:text="Edit Item"
-            android:layout_marginBottom="12dp" />
+            android:textAlignment="viewStart"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="17dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnEdit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnEdit"
+            app:srcCompat="@drawable/arrow" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnEdit" />
 
         <Button
             android:id="@+id/btnDelete"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Delete Item" />
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#00FFFFFF"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="12dp"
+            android:text="Delete Item"
+            android:textAlignment="viewStart"
+            android:textColor="#181616"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="17dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDelete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnDelete"
+            app:srcCompat="@drawable/arrow" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDelete" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#00FFFFFF"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="12dp"
+            android:text="Search"
+            android:textAlignment="viewStart"
+            android:textColor="#181616"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="17dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnSearch"
+            app:srcCompat="@drawable/arrow" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSearch" />
+
+        <Button
+            android:id="@+id/btnViewData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#00FFFFFF"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="12dp"
+            android:text="View Data"
+            android:textAlignment="viewStart"
+            android:textColor="#181616"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="17dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnViewData"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnViewData"
+            app:srcCompat="@drawable/arrow" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnViewData" />
 
         <Button
             android:id="@+id/btnSignOut"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Sign Out"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="500dp"
+            android:layout_marginEnd="36dp"
             android:backgroundTint="@color/red"
-            android:layout_marginTop="250dp" />
+            android:fontFamily="sans-serif"
+            android:text="Sign Out"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider6" />
 
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
-
-
-
-
-
-
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:id="@+id/main"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:gravity="center"-->
-<!--    android:orientation="vertical"-->
-<!--    android:padding="24dp">-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/etItemId"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:autofillHints="ID"-->
-<!--            android:inputType="number"-->
-<!--            android:hint="ID" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/etName"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:inputType="text"-->
-<!--            android:autofillHints="name"-->
-<!--            android:hint="Name" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/etDescription"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Description" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/etCategory"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Category" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/Status"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="status" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/QrCode"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="QR Code" />-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="3"-->
-<!--            android:paddingTop="12dp">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnAdd"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Add" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnUpdate"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Edit" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnDelete"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Delete" />-->
-<!--        </LinearLayout>-->
-
-<!--    </LinearLayout>-->

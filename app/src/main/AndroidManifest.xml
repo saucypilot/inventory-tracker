@@ -21,12 +21,19 @@
             android:enabled="true"
             android:exported="false" />
 
+        <!-- Add CheckoutReminderService -->
+        <service
+            android:name=".CheckoutReminderService"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name=".ItemProfileActivity"
             android:exported="false" />
         <activity
             android:name=".SearchActivity"
-            android:exported="false" /> <!-- Make LOGIN the launcher so both buttons work -->
+            android:exported="false" />
+        <!-- Make LOGIN the launcher so both buttons work -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -35,10 +42,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Create account screen -->
-        <activity android:name=".CreateAccountActivity" /> <!-- Post-login destinations -->
+        </activity>
+        <!-- Create account screen -->
+        <activity android:name=".CreateAccountActivity" />
+        <!-- Post-login destinations -->
         <activity android:name=".UserActivity" />
-        <activity android:name=".AdminActivity" /> <!-- Admin ops -->
+        <activity android:name=".AdminActivity" />
+        <!-- Admin ops -->
         <activity android:name=".AddInv" />
         <activity android:name=".EditInv" />
         <activity android:name=".DeleteInv" />
@@ -47,6 +57,14 @@
             android:exported="false" />
         <activity
             android:name=".DashboardActivity"
+            android:exported="false" />
+
+        <!-- NEW: Notification Activities -->
+        <activity
+            android:name=".NotificationSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManualNotificationActivity"
             android:exported="false" />
 
         <meta-data

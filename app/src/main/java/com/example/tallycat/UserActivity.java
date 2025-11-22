@@ -3,35 +3,73 @@ package com.example.tallycat;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 public class UserActivity extends AppCompatActivity {
-    @Override protected void onCreate(Bundle savedInstanceState) {
+
+    private Switch switchNotifications;
+    private SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        // Start the reminder service for notification system
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
+
+        // Start the reminder service
         startReminderService();
 
+        // Initialize views
+        switchNotifications = findViewById(R.id.switchNotifications);
         Button signOut = findViewById(R.id.btnSignOut);
+        TextView tvLastCheckout = findViewById(R.id.tvLastCheckout);
+
+        // Load notification preference
+        loadNotificationPreference();
+
+        // Set up notification toggle listener
+        switchNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveNotificationPreference(isChecked);
+            }
+        });
+
         signOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
 
-        //Search button
+        // Search button
         Button userSearchButton = findViewById(R.id.btnUserSearch);
         userSearchButton.setOnClickListener(v -> {
-            // Create an Intent to open SearchActivity when the button is clicked.
             Intent intent = new Intent(UserActivity.this, SearchActivity.class);
             startActivity(intent);
         });
     }
+
+    private void loadNotificationPreference() {
+        boolean notificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);
+        switchNotifications.setChecked(notificationsEnabled);
+    }
+
+    private void saveNotificationPreference(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("notifications_enabled", enabled);
+        editor.apply();
+    }
+
     private void startReminderService() {
-        Intent serviceIntent = new Intent(this, ReminderService.class);
+        Intent serviceIntent = new Intent(this, CheckoutReminderService.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent);

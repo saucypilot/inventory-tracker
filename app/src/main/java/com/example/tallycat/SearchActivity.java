@@ -3,7 +3,9 @@ package com.example.tallycat;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +24,9 @@ public class SearchActivity extends AppCompatActivity implements SearchControlle
     private Button btnPerformSearch;
     private RecyclerView rvSearchResults;
 
+    // BACK BUTTON: Add this line for the back button
+    private ImageButton btnBack;
+
     private ItemAdapter itemAdapter;
     private SearchController searchController;
 
@@ -38,10 +43,19 @@ public class SearchActivity extends AppCompatActivity implements SearchControlle
         btnPerformSearch = findViewById(R.id.btnPerformSearch);
         rvSearchResults = findViewById(R.id.rvSearchResults);
 
+        // BACK BUTTON: Initialize the back button
+        btnBack = findViewById(R.id.btnBack);
+
         // 3. Setup RecyclerView
         itemAdapter = new ItemAdapter(new ArrayList<>(), this);
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         rvSearchResults.setAdapter(itemAdapter);
+
+        // BACK BUTTON: Set click listener to go back when pressed
+        btnBack.setOnClickListener(v -> {
+            // Close this activity and return to previous screen
+            finish();
+        });
 
         // 4. Set OnClickListener to trigger the search
         btnPerformSearch.setOnClickListener(v -> {

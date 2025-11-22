@@ -17,12 +17,16 @@
             android:id="@+id/admin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="299dp"
             android:fontFamily="@font/abril_fatface"
             android:paddingBottom="12dp"
             android:text="Admin"
             android:textColor="#000000"
             android:textSize="28sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,6 +39,7 @@
             android:layout_marginEnd="-20dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/admin" />
 
@@ -223,14 +228,67 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
-            android:layout_marginTop="500dp"
+            android:layout_marginTop="455dp"
             android:layout_marginEnd="36dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/red"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/alice"
             android:text="Sign Out"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider6"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <View
+            android:id="@+id/divider7"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider6" />
+            app:layout_constraintTop_toBottomOf="@+id/btnViewData" />
+
+        <Button
+            android:id="@+id/btnNotificationSettings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#00FFFFFF"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="12dp"
+            android:text="Notification Settings"
+            android:textAlignment="viewStart"
+            android:textColor="#181616"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="17dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnNotificationSettings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnNotificationSettings"
+            app:srcCompat="@drawable/arrow" />
+
+        <View
+            android:id="@+id/divider8"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnNotificationSettings" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

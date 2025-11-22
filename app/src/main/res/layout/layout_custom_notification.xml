@@ -34,10 +34,10 @@
             android:id="@+id/notification_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="It's been 8 hours since you checked out an item"
-            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:text="It's time to return a checked out item!"
             android:textColor="@color/gray"
-            android:layout_marginTop="4dp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/notification_time"
@@ -55,14 +55,15 @@
         android:id="@+id/notification_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/glass_bubble_selected"
+        android:backgroundTint="@color/primary"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
         android:text="VIEW"
         android:textAllCaps="false"
-        android:background="@drawable/notification_button_background"
         android:textColor="@color/white"
-        android:textSize="12sp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" />
+        android:textSize="12sp" />
 
 </LinearLayout>

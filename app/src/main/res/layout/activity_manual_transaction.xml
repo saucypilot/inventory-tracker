@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Item identity / live status -->
+        <TextView
+            android:id="@+id/tvManualName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="Item name" />
+
+        <TextView
+            android:id="@+id/tvManualItemId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:text="ID: sample" />
+
+        <TextView
+            android:id="@+id/tvManualStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Status: Available" />
+
+        <TextView
+            android:id="@+id/tvManualHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:text="Holder: -" />
+
+        <TextView
+            android:id="@+id/tvManualDueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:text="Due date: -" />
+
+        <!-- Editable fields -->
+        <EditText
+            android:id="@+id/etHolderEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Holder email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/etDueDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Due date (yyyy-MM-dd)"
+            android:inputType="text" />
+
+        <!-- Actions = choose checkout or return -->
+        <Button
+            android:id="@+id/btnManualCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Checkout" />
+
+        <Button
+            android:id="@+id/btnManualReturn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Return" />
+
+    </LinearLayout>
+</ScrollView>

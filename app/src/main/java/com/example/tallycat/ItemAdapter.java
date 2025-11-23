@@ -1,7 +1,8 @@
 package com.example.tallycat;
 
 import android.content.Context;
-import android.content.Intent;import android.view.LayoutInflater;
+import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,16 +14,25 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     private final List<Item> itemList;
     private final Context context;
+    private final boolean manualMode;   // NEW
 
+    // Default constructor (view-only mode)
     public ItemAdapter(List<Item> itemList, Context context) {
+        this(itemList, context, false);
+    }
+
+    // NEW constructor for manual checkout/return mode
+    public ItemAdapter(List<Item> itemList, Context context, boolean manualMode) {
         this.itemList = itemList;
         this.context = context;
+        this.manualMode = manualMode;
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inventory, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_inventory, parent, false);
         return new ItemViewHolder(view);
     }
 
@@ -34,11 +44,17 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.tvItemDescription.setText(item.getDescription());
         holder.tvItemStatus.setText("Status: " + item.getStatus());
 
-        // Set the click listener on the entire item view
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ItemProfileActivity.class);
-            // Put the entire Item object into the intent extras
-            intent.putExtra("ITEM_EXTRA", item);
+            Intent intent;
+            if (manualMode) {
+                // Manual UC11 flow
+                intent = new Intent(context, ManualCheckoutReturnActivity.class);
+                intent.putExtra(ManualCheckoutReturnActivity.EXTRA_ITEM, item);
+            } else {
+                // Existing “view profile only” flow
+                intent = new Intent(context, ItemProfileActivity.class);
+                intent.putExtra("ITEM_EXTRA", item);
+            }
             context.startActivity(intent);
         });
     }
@@ -48,7 +64,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return itemList != null ? itemList.size() : 0;
     }
 
-    // Helper methods
     public void updateData(List<Item> newItems) {
         this.itemList.clear();
         this.itemList.addAll(newItems);

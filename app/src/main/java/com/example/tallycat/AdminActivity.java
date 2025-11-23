@@ -175,8 +175,11 @@ public class AdminActivity extends AppCompatActivity {
         btnGoDelete.setOnClickListener(v ->
                 startActivity(new Intent(this, DeleteInv.class)));
 
-        btnGoSearch.setOnClickListener(v ->
-                startActivity(new Intent(this, SearchActivity.class)));
+        btnGoSearch.setOnClickListener(v -> {
+            Intent i = new Intent(this, SearchActivity.class);
+            i.putExtra("manualMode", true);  // UC11 manual flow
+            startActivity(i);
+        });
 
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();

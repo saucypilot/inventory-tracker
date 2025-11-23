@@ -25,6 +25,8 @@ public class SearchActivity extends AppCompatActivity implements SearchControlle
     private ItemAdapter itemAdapter;
     private SearchController searchController;
 
+    private boolean manualMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +35,16 @@ public class SearchActivity extends AppCompatActivity implements SearchControlle
         // 1. Initialize the Controller
         searchController = new SearchController();
 
+        // Decide if we are in manual UC11 mode
+        manualMode = getIntent().getBooleanExtra("manualMode", false);
+
         // 2. Initialize UI components
         etSearchQuery = findViewById(R.id.etSearchQuery);
         btnPerformSearch = findViewById(R.id.btnPerformSearch);
         rvSearchResults = findViewById(R.id.rvSearchResults);
 
         // 3. Setup RecyclerView
-        itemAdapter = new ItemAdapter(new ArrayList<>(), this);
+        itemAdapter = new ItemAdapter(new ArrayList<>(), this, manualMode);
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         rvSearchResults.setAdapter(itemAdapter);
 
@@ -47,13 +52,13 @@ public class SearchActivity extends AppCompatActivity implements SearchControlle
         btnPerformSearch.setOnClickListener(v -> {
             String queryText = etSearchQuery.getText().toString().trim();
             if (!queryText.isEmpty()) {
-                // The Activity tells the controller to do the work, passing itself as the listener
                 searchController.performSearch(queryText, this);
             } else {
                 Toast.makeText(this, "Please enter an item ID to search", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     // --- These methods are called by the SearchController to update the UI ---
 

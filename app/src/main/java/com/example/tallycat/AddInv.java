@@ -50,6 +50,8 @@ public class AddInv extends AppCompatActivity {
             doc.put("category", cat);
             doc.put("status", status);
             doc.put("qrCode", ""); // empty for now
+            doc.put("holder", "");
+            doc.put("dueDate", "");
 
             db.collection("inventory").document(id).set(doc)
                     .addOnSuccessListener(unused -> {

@@ -41,9 +41,19 @@
             android:name=".DashboardActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ManualCheckoutReturnActivity"
+            android:exported="false" />
+
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".InventoryActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

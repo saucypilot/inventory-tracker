@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TallyCat</string>
+
+    <string-array name="inventory_status_filter_options">
+        <item>All</item>
+        <item>Available</item>
+        <item>Checked-out</item>
+        <item>Overdue</item>
+    </string-array>
 </resources>

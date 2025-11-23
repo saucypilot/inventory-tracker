@@ -21,6 +21,21 @@
         android:layout_height="wrap_content"
         android:text="Category: Electronics"
         android:textSize="14sp" />
+    
+    <TextView
+        android:id="@+id/tvItemHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Holder: —"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvItemDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Due: —"
+        android:textSize="14sp" />
+
 
     <TextView
         android:id="@+id/tvItemDescription"

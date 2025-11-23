@@ -49,7 +49,11 @@ public class AddInv extends AppCompatActivity {
             doc.put("description", desc);
             doc.put("category", cat);
             doc.put("status", status);
-            doc.put("qrCode", ""); // empty for now
+            doc.put("qrCode", "");   // empty for now
+            doc.put("holder", "");   // no holder yet
+            doc.put("dueDate", "");  // no due date yet
+
+
 
             db.collection("inventory").document(id).set(doc)
                     .addOnSuccessListener(unused -> {

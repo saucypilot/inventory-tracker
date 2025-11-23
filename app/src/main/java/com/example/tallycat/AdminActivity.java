@@ -165,6 +165,15 @@ public class AdminActivity extends AppCompatActivity {
         Button btnSignOut = findViewById(R.id.btnSignOut);
         Button btnGoSearch = findViewById(R.id.btnSearch);
         Button viewDataButton = findViewById(R.id.btnViewData);
+        Button btnManualCheckout = findViewById(R.id.btnManualCheckout);
+        
+        btnManualCheckout.setOnClickListener(v ->
+                startActivity(new Intent(this, ManualCheckoutReturnActivity.class)));
+
+        Button viewInventory = findViewById(R.id.btnViewInventory);
+                viewInventory.setOnClickListener(v ->
+                startActivity(new Intent(UserActivity.this, InventoryActivity.class)));
+
 
         btnGoAdd.setOnClickListener(v ->
                 startActivity(new Intent(this, AddInv.class)));

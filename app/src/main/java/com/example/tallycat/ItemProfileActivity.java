@@ -1,15 +1,22 @@
 package com.example.tallycat;
 
 import android.os.Bundle;
-// Import the ImageButton class
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ItemProfileActivity extends AppCompatActivity {
 
-    private TextView tvName, tvId, tvStatus, tvCategory, tvDescription;
+    private TextView tvName;
+    private TextView tvId;
+    private TextView tvStatus;
+    private TextView tvCategory;
+    private TextView tvDescription;
+    private TextView tvHolder;
+    private TextView tvDueDate;
+
     private ImageButton btnBack;
 
     @Override
@@ -18,10 +25,7 @@ public class ItemProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_profile);
 
         btnBack = findViewById(R.id.btnBack);
-
-        btnBack.setOnClickListener(v -> {
-            finish();
-        });
+        btnBack.setOnClickListener(v -> finish());
 
         // Find all the TextViews from the layout
         tvName = findViewById(R.id.tvProfileItemName);
@@ -29,17 +33,17 @@ public class ItemProfileActivity extends AppCompatActivity {
         tvStatus = findViewById(R.id.tvProfileStatus);
         tvCategory = findViewById(R.id.tvProfileCategory);
         tvDescription = findViewById(R.id.tvProfileDescription);
+        tvHolder = findViewById(R.id.tvProfileHolder);
+        tvDueDate = findViewById(R.id.tvProfileDueDate);
 
         // Get the Item object from the intent that started this activity
         Item item = getIntent().getParcelableExtra("ITEM_EXTRA");
 
-        // Check if the item object is valid and populate the views
         if (item != null) {
             populateProfile(item);
         } else {
-            // Handle the error case where the item is null
             Toast.makeText(this, "Error: Item data not found.", Toast.LENGTH_LONG).show();
-            finish(); // Close the activity if there's no data
+            finish();
         }
     }
 
@@ -49,5 +53,17 @@ public class ItemProfileActivity extends AppCompatActivity {
         tvStatus.setText(item.getStatus());
         tvCategory.setText(item.getCategory());
         tvDescription.setText(item.getDescription());
+
+        String holderText = item.getHolder();
+        if (holderText == null || holderText.isEmpty()) {
+            holderText = "\u2014";
+        }
+        tvHolder.setText(holderText);
+
+        String dueText = item.getDueDate();
+        if (dueText == null || dueText.isEmpty()) {
+            dueText = "\u2014";
+        }
+        tvDueDate.setText(dueText);
     }
 }

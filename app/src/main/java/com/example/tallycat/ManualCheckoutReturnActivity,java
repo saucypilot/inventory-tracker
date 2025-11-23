@@ -1,0 +1,260 @@
+package com.example.tallycat;
+
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ManualCheckoutReturnActivity extends AppCompatActivity {
+
+    private FirebaseFirestore db;
+    private RecyclerView rvManualInventory;
+    private EditText etManualSearch;
+
+    private ItemAdapter itemAdapter;
+    private final List<Item> allItems = new ArrayList<>();
+
+    private ListenerRegistration inventoryListener;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_manual_checkout_return);
+
+        db = FirebaseFirestore.getInstance();
+        rvManualInventory = findViewById(R.id.rvManualInventory);
+        etManualSearch = findViewById(R.id.etManualSearch);
+
+        // Use ItemAdapter with a custom click listener for manual actions
+        itemAdapter = new ItemAdapter(new ArrayList<>(), this,
+                item -> showManualActionDialog(item));
+
+        rvManualInventory.setLayoutManager(new LinearLayoutManager(this));
+        rvManualInventory.setAdapter(itemAdapter);
+
+        // Live subscription to inventory for "live status" behavior
+        inventoryListener = db.collection("inventory")
+                .addSnapshotListener((snapshot, e) -> {
+                    if (e != null) {
+                        Toast.makeText(this, "Failed to load inventory: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (snapshot == null) return;
+
+                    allItems.clear();
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        Item item = doc.toObject(Item.class);
+                        // Make sure we always have the document id
+                        item.setItemId(doc.getId());
+                        allItems.add(item);
+                    }
+                    applyFilter();
+                });
+
+        etManualSearch.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                applyFilter();
+            }
+            @Override public void afterTextChanged(Editable s) { }
+        });
+    }
+
+    private void applyFilter() {
+        String query = etManualSearch.getText().toString().trim().toLowerCase();
+        List<Item> filtered = new ArrayList<>();
+
+        for (Item item : allItems) {
+            boolean matchesQuery = query.isEmpty()
+                    || (item.getName() != null && item.getName().toLowerCase().contains(query))
+                    || (item.getItemId() != null && item.getItemId().toLowerCase().contains(query));
+            if (matchesQuery) {
+                filtered.add(item);
+            }
+        }
+
+        itemAdapter.updateData(filtered);
+    }
+
+    private void showManualActionDialog(Item item) {
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_manual_checkout_return, null);
+
+        TextView tvItemName = dialogView.findViewById(R.id.tvDialogItemName);
+        TextView tvItemStatus = dialogView.findViewById(R.id.tvDialogItemStatus);
+        RadioGroup rgAction = dialogView.findViewById(R.id.rgAction);
+        RadioButton rbCheckout = dialogView.findViewById(R.id.rbCheckout);
+        RadioButton rbReturn = dialogView.findViewById(R.id.rbReturn);
+        EditText etHolder = dialogView.findViewById(R.id.etHolder);
+        EditText etDueDate = dialogView.findViewById(R.id.etDueDate);
+
+        tvItemName.setText(item.getName());
+        String status = item.getStatus() != null ? item.getStatus() : "Unknown";
+        tvItemStatus.setText("Status: " + status);
+
+        String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getEmail()
+                : "";
+        String holder = item.getHolder();
+        if (holder == null || holder.isEmpty()) {
+            holder = currentUserEmail;
+        }
+        etHolder.setText(holder);
+
+        String dueDate = item.getDueDate();
+        if (dueDate == null || dueDate.isEmpty()) {
+            // Default policy: 7 days from today
+            dueDate = LocalDate.now().plusDays(7).toString(); // e.g. 2025-12-01
+        }
+        etDueDate.setText(dueDate);
+
+        // Default radio choice based on current status
+        if ("Checked-out".equalsIgnoreCase(status)) {
+            rbReturn.setChecked(true);
+        } else {
+            rbCheckout.setChecked(true);
+        }
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Manual Check Out / Return")
+                .setView(dialogView)
+                .setPositiveButton("Confirm", null) // we override below
+                .setNegativeButton("Cancel", (d, which) -> d.dismiss())
+                .create();
+
+        dialog.setOnShowListener(d -> {
+            Button btnConfirm = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            btnConfirm.setOnClickListener(v -> {
+                int checkedId = rgAction.getCheckedRadioButtonId();
+                boolean isCheckout = checkedId == R.id.rbCheckout;
+
+                String chosenHolder = etHolder.getText().toString().trim();
+                String chosenDueDate = etDueDate.getText().toString().trim();
+
+                if (isCheckout) {
+                    if (chosenHolder.isEmpty()) {
+                        etHolder.setError("Holder is required for checkout");
+                        return;
+                    }
+                    if (chosenDueDate.isEmpty()) {
+                        etDueDate.setError("Due date is required for checkout");
+                        return;
+                    }
+                }
+
+                handleManualAction(item, isCheckout, chosenHolder, chosenDueDate, dialog);
+            });
+        });
+
+        dialog.show();
+    }
+
+    private void handleManualAction(Item item,
+                                    boolean isCheckout,
+                                    String holder,
+                                    String dueDate,
+                                    AlertDialog dialog) {
+        String currentStatus = item.getStatus() != null ? item.getStatus() : "Available";
+
+        if (isCheckout) {
+            if ("Checked-out".equalsIgnoreCase(currentStatus)) {
+                Toast.makeText(this, "Item is already checked out.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Map<String, Object> tx = new HashMap<>();
+            tx.put("transactionType", "CHECKOUT");
+            tx.put("itemId", item.getItemId());
+            tx.put("name", item.getName());
+            tx.put("email", holder);
+
+            db.collection("transactions")
+                    .add(tx)
+                    .addOnSuccessListener(ref -> {
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("status", "Checked-out");
+                        updates.put("holder", holder);
+                        updates.put("dueDate", dueDate);
+
+                        db.collection("inventory")
+                                .document(item.getItemId())
+                                .update(updates)
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(this, "Checked out.", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                })
+                                .addOnFailureListener(err ->
+                                        Toast.makeText(this, "Failed to update item: " + err.getMessage(), Toast.LENGTH_LONG).show());
+                    })
+                    .addOnFailureListener(err ->
+                            Toast.makeText(this, "Failed to record transaction: " + err.getMessage(), Toast.LENGTH_LONG).show());
+
+        } else { // Return
+            if ("Available".equalsIgnoreCase(currentStatus)) {
+                Toast.makeText(this, "Item is not currently checked out.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String actorEmail = FirebaseAuth.getInstance().getCurrentUser() != null
+                    ? FirebaseAuth.getInstance().getCurrentUser().getEmail()
+                    : holder;
+
+            Map<String, Object> tx = new HashMap<>();
+            tx.put("transactionType", "RETURN");
+            tx.put("itemId", item.getItemId());
+            tx.put("name", item.getName());
+            tx.put("email", actorEmail);
+
+            db.collection("transactions")
+                    .add(tx)
+                    .addOnSuccessListener(ref -> {
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("status", "Available");
+                        updates.put("holder", "");
+                        updates.put("dueDate", "");
+
+                        db.collection("inventory")
+                                .document(item.getItemId())
+                                .update(updates)
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(this, "Item returned.", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                })
+                                .addOnFailureListener(err ->
+                                        Toast.makeText(this, "Failed to update item: " + err.getMessage(), Toast.LENGTH_LONG).show());
+                    })
+                    .addOnFailureListener(err ->
+                            Toast.makeText(this, "Failed to record transaction: " + err.getMessage(), Toast.LENGTH_LONG).show());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (inventoryListener != null) {
+            inventoryListener.remove();
+        }
+        super.onDestroy();
+    }
+}

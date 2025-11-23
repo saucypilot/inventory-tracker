@@ -27,6 +27,39 @@
             tools:layout_conversion_absoluteWidth="309dp"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="41dp" />
+        
+        <TextView
+            android:id="@+id/tvProfileHolderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Holder"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tvProfileHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            tools:text="someone@example.com" />
+
+        <TextView
+            android:id="@+id/tvProfileDueDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Due date"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tvProfileDueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            tools:text="2025-12-01" />
+
 
         <Button
             android:id="@+id/btnAdd"

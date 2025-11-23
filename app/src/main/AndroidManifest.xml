@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- ADDED: Camera permission for QR scanning -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -66,6 +68,23 @@
         <activity
             android:name=".ManualNotificationActivity"
             android:exported="false" />
+
+        <!-- ADDED: QR Scanner Activity -->
+        <activity
+            android:name=".QRScannerActivity"
+            android:exported="false" />
+
+        <!-- ADDED: QR Display Activity -->
+        <activity
+            android:name=".QRDisplayActivity"
+            android:exported="false" />
+
+        <!-- ADDED: QR Capture Activity (for portrait scanning) -->
+        <activity
+            android:name=".CaptureActivityPortrait"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"

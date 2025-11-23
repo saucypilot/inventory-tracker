@@ -95,6 +95,32 @@
             android:textSize="18sp"
             tools:text="A detailed description of the item goes here." />
 
+        <!-- ADDED: QR Scan Button -->
+        <Button
+            android:id="@+id/btnQRScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/alice"
+            android:text="Scan QR Code to Check Out/Return"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- Add this to your activity_item_profile.xml, after the scan button -->
+        <Button
+            android:id="@+id/btnViewQR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/alice"
+            android:text="View QR Code"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </RelativeLayout>

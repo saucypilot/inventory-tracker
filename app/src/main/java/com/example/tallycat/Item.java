@@ -10,6 +10,7 @@ public class Item implements Parcelable {
     private String category;
     private String status;
     private String itemId;
+    private String qrCode; // ADDED: QR code field
 
     // constructor
     public Item() {}
@@ -21,6 +22,7 @@ public class Item implements Parcelable {
         category = in.readString();
         status = in.readString();
         itemId = in.readString();
+        qrCode = in.readString(); // ADDED: Read QR code from parcel
     }
 
     // This is the CREATOR used to deserialize the object.
@@ -48,6 +50,7 @@ public class Item implements Parcelable {
         dest.writeString(category);
         dest.writeString(status);
         dest.writeString(itemId);
+        dest.writeString(qrCode); // ADDED: Write QR code to parcel
     }
 
     //Getters and setters
@@ -61,5 +64,6 @@ public class Item implements Parcelable {
     public void setStatus(String status) { this.status = status; }
     public String getItemId() { return itemId; }
     public void setItemId(String itemId) { this.itemId = itemId; }
+    public String getQrCode() { return qrCode; } // ADDED: QR code getter
+    public void setQrCode(String qrCode) { this.qrCode = qrCode; } // ADDED: QR code setter
 }
-

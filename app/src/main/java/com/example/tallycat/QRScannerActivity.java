@@ -2,6 +2,7 @@ package com.example.tallycat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -23,18 +24,18 @@ public class QRScannerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_qr_scanner); // the simple blank layout you created
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        // Check if we came from ItemProfileActivity with a specific item
         currentItemId = getIntent().getStringExtra("CURRENT_ITEM_ID");
 
-        // ADDED: Check camera permission first
         if (checkCameraPermission()) {
             proceedWithQRScanning();
         }
     }
+
 
     // ADDED: Method to check and request camera permission
     private boolean checkCameraPermission() {
@@ -67,13 +68,7 @@ public class QRScannerActivity extends AppCompatActivity {
 
     // ADDED: Method to handle QR scanning after permission is granted
     private void proceedWithQRScanning() {
-        if (currentItemId != null) {
-            // If we have a specific item, process it directly
-            processItemScan(currentItemId);
-        } else {
-            // Otherwise start QR scanner
-            startQRScanner();
-        }
+        startQRScanner();  // always scan for this flow
     }
 
     private void startQRScanner() {
@@ -119,6 +114,9 @@ public class QRScannerActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Item item = documentSnapshot.toObject(Item.class);
                         if (item != null) {
+                            // Ensure itemId is set so it isn't null later
+                            item.setItemId(itemId);
+
                             toggleItemStatus(item);
                         } else {
                             Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
@@ -134,6 +132,7 @@ public class QRScannerActivity extends AppCompatActivity {
                     finish();
                 });
     }
+
 
     private void toggleItemStatus(Item item) {
         String currentStatus = item.getStatus();

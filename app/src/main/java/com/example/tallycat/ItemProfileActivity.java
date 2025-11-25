@@ -61,9 +61,9 @@ public class ItemProfileActivity extends AppCompatActivity {
         btnQRScan.setOnClickListener(v -> {
             if (currentItem != null) {
                 // Start QR Scanner activity and pass the current item
-                Intent intent = new Intent(ItemProfileActivity.this, QRScannerActivity.class);
-                intent.putExtra("CURRENT_ITEM_ID", currentItem.getItemId());
+                Intent intent = new Intent(this, QRScannerActivity.class);
                 startActivity(intent);
+
             } else {
                 Toast.makeText(this, "Item data not available", Toast.LENGTH_SHORT).show();
             }

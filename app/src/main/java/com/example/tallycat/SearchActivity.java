@@ -3,7 +3,10 @@ package com.example.tallycat;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.content.Context;
+import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,5 +83,11 @@ public class SearchActivity extends AppCompatActivity implements SearchControlle
         Log.d(TAG, "Search completed, but no items were found.");
         Toast.makeText(this, "No item found with that ID", Toast.LENGTH_SHORT).show();
         itemAdapter.clearData(); // Clear previous results
+    }
+
+    public static void launchManualSearch(Context context) {
+        Intent i = new Intent(context, SearchActivity.class);
+        i.putExtra("manualMode", true);
+        context.startActivity(i);
     }
 }

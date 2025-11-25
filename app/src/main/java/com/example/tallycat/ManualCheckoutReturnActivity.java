@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,6 +19,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.text.ParseException;
+import java.util.Date;
+
 
 /**
  * Manual fallback for Use Case 11:
@@ -83,8 +87,24 @@ public class ManualCheckoutReturnActivity extends AppCompatActivity {
             etDueDate.setText(item.getDueDate());
         }
 
-        btnManualCheckout.setOnClickListener(v -> performCheckout());
-        btnManualReturn.setOnClickListener(v -> performReturn());
+        btnManualCheckout.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm checkout")
+                    .setMessage("Record a manual checkout for this item?")
+                    .setPositiveButton("Yes", (dialog, which) -> performCheckout())
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+        btnManualReturn.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm return")
+                    .setMessage("Record a manual return for this item?")
+                    .setPositiveButton("Yes", (dialog, which) -> performReturn())
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
     }
 
     private void bindItemToUI() {
@@ -113,6 +133,43 @@ public class ManualCheckoutReturnActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(dueDate)) {
             Toast.makeText(this, "Due date is required.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Enforce simple policy bounds on the due date:
+// - Must be in yyyy-MM-dd format
+// - Cannot be in the past
+// - Cannot be more than 30 days from today
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        fmt.setLenient(false);
+        Date parsedDate;
+        try {
+            parsedDate = fmt.parse(dueDate);
+        } catch (ParseException e) {
+            Toast.makeText(this, "Due date must be in yyyy-MM-dd format.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+// Normalize "today" to midnight for comparison
+        Calendar todayCal = Calendar.getInstance();
+        todayCal.set(Calendar.HOUR_OF_DAY, 0);
+        todayCal.set(Calendar.MINUTE, 0);
+        todayCal.set(Calendar.SECOND, 0);
+        todayCal.set(Calendar.MILLISECOND, 0);
+        Date today = todayCal.getTime();
+
+        if (parsedDate.before(today)) {
+            Toast.makeText(this, "Due date cannot be in the past.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Calendar maxCal = Calendar.getInstance();
+        maxCal.setTime(today);
+        maxCal.add(Calendar.DAY_OF_YEAR, 30);
+        Date maxDate = maxCal.getTime();
+
+        if (parsedDate.after(maxDate)) {
+            Toast.makeText(this, "Due date cannot be more than 30 days from today.", Toast.LENGTH_SHORT).show();
             return;
         }
 

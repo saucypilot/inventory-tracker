@@ -2,6 +2,7 @@ package com.example.tallycat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,7 @@ public class QRScannerActivity extends AppCompatActivity {
     }
 
 
-    // ADDED: Method to check and request camera permission
+    // Method to check and request camera permission
     private boolean checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -50,7 +51,7 @@ public class QRScannerActivity extends AppCompatActivity {
         return true;
     }
 
-    // ADDED: Handle permission request result
+    // Handle permission request result
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -66,7 +67,7 @@ public class QRScannerActivity extends AppCompatActivity {
         }
     }
 
-    // ADDED: Method to handle QR scanning after permission is granted
+    // Method to handle QR scanning after permission is granted
     private void proceedWithQRScanning() {
         startQRScanner();  // always scan for this flow
     }
@@ -91,8 +92,9 @@ public class QRScannerActivity extends AppCompatActivity {
             });
 
     private void handleScannedQRCode(String qrContent) {
-        if (qrContent.startsWith("TALLYCAT_ITEM:")) {
-            String itemId = qrContent.substring("TALLYCAT_ITEM:".length());
+        Log.d("QRScanner", "Scanned QR content: " + qrContent);
+        if (qrContent.startsWith("TALLYCAT:")) {
+            String itemId = qrContent.substring("TALLYCAT:".length());
 
             // Verify scanned QR matches the expected item (if any)
             if (currentItemId != null && !currentItemId.equals(itemId)) {
@@ -100,7 +102,6 @@ public class QRScannerActivity extends AppCompatActivity {
                 finish();
                 return;
             }
-
             processItemScan(itemId);
         } else {
             Toast.makeText(this, "Invalid QR Code", Toast.LENGTH_SHORT).show();

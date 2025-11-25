@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -66,15 +67,29 @@ public class UserActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("notifications_enabled", enabled);
         editor.apply();
+
+        // Restart service when notification preference changes
+        if (enabled) {
+            startReminderService();
+        }
     }
 
     private void startReminderService() {
-        Intent serviceIntent = new Intent(this, CheckoutReminderService.class);
+        try {
+            Intent serviceIntent = new Intent(this, CheckoutReminderService.class);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent);
-        } else {
-            startService(serviceIntent);
+            // Stop any existing service first to ensure clean start
+            stopService(serviceIntent);
+
+            // Start the service
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent);
+            } else {
+                startService(serviceIntent);
+            }
+            Log.d("UserActivity", "Reminder service started successfully");
+        } catch (Exception e) {
+            Log.e("UserActivity", "Failed to start reminder service: " + e.getMessage());
         }
     }
 }

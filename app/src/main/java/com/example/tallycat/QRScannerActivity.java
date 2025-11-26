@@ -13,6 +13,11 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.UUID;
 
 public class QRScannerActivity extends AppCompatActivity {
 
@@ -116,25 +121,61 @@ public class QRScannerActivity extends AppCompatActivity {
         String currentStatus = item.getStatus();
         String newStatus;
         String transactionType;
+        String holder = null;
+        String dueDate = null;
+
+        // Get current user email as holder
+        String currentUserEmail = mAuth.getCurrentUser() != null ?
+                mAuth.getCurrentUser().getEmail() : "Unknown User";
 
         if ("Available".equalsIgnoreCase(currentStatus)) {
             newStatus = "Checked Out";
             transactionType = "checkout";
+            holder = currentUserEmail;
+            dueDate = calculateDueDate(); // Set due date for checkouts
         } else if ("Checked Out".equalsIgnoreCase(currentStatus)) {
             newStatus = "Available";
             transactionType = "return";
+            // Clear holder and due date when returning
+            holder = null;
+            dueDate = null;
         } else {
+            // Default to Available if status is unknown
             newStatus = "Available";
             transactionType = "return";
+            holder = null;
+            dueDate = null;
+        }
+
+        // Generate unique transaction ID
+        String transactionId = UUID.randomUUID().toString();
+
+        // Update item in Firestore
+        HashMap<String, Object> updateData = new HashMap<>();
+        updateData.put("status", newStatus);
+
+        if (holder != null) {
+            updateData.put("holder", holder);
+        } else {
+            updateData.put("holder", null);
+        }
+
+        if (dueDate != null) {
+            updateData.put("dueDate", dueDate);
+        } else {
+            updateData.put("dueDate", null);
         }
 
         db.collection("inventory").document(item.getItemId())
-                .update("status", newStatus)
+                .update(updateData)
                 .addOnSuccessListener(unused -> {
-                    recordTransaction(item, transactionType);
-                    String message = "Item " + transactionType + " successful!";
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    recordTransaction(item, transactionType, transactionId, holder, dueDate);
 
+                    // Create detailed success message
+                    String message = createSuccessMessage(item, transactionType, transactionId, holder, dueDate);
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+                    // Navigate back to previous screen
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("SCAN_RESULT", message);
                     setResult(RESULT_OK, resultIntent);
@@ -146,20 +187,54 @@ public class QRScannerActivity extends AppCompatActivity {
                 });
     }
 
-    private void recordTransaction(Item item, String transactionType) {
+    private String calculateDueDate() {
+        // Set due date to 7 days from now
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        long oneWeekInMillis = 7 * 24 * 60 * 60 * 1000L;
+        Date dueDate = new Date(System.currentTimeMillis() + oneWeekInMillis);
+        return sdf.format(dueDate);
+    }
+
+    private String createSuccessMessage(Item item, String transactionType, String transactionId, String holder, String dueDate) {
+        StringBuilder message = new StringBuilder();
+
+        message.append("✓ ").append(transactionType.toUpperCase()).append(" SUCCESSFUL!\n");
+        message.append("Item: ").append(item.getName()).append("\n");
+        message.append("Transaction ID: ").append(transactionId.substring(0, 8)).append("...\n");
+
+        if ("checkout".equals(transactionType)) {
+            message.append("Holder: ").append(holder).append("\n");
+            message.append("Due Date: ").append(dueDate).append("\n");
+            message.append("Status: Checked Out");
+        } else {
+            message.append("Status: Available");
+        }
+
+        return message.toString();
+    }
+
+    private void recordTransaction(Item item, String transactionType, String transactionId, String holder, String dueDate) {
         String userEmail = mAuth.getCurrentUser() != null ?
                 mAuth.getCurrentUser().getEmail() : "Unknown User";
 
-        java.util.Map<String, Object> transaction = new java.util.HashMap<>();
+        // Create transaction data
+        HashMap<String, Object> transaction = new HashMap<>();
+        transaction.put("transactionId", transactionId);
         transaction.put("itemId", item.getItemId());
         transaction.put("name", item.getName());
         transaction.put("email", userEmail);
         transaction.put("transactionType", transactionType);
+        transaction.put("holder", holder);
+        transaction.put("dueDate", dueDate);
         transaction.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
 
+        // Add to transactions collection
         db.collection("transactions").add(transaction)
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "Transaction recorded: " + documentReference.getId());
+                    Log.d(TAG, "Transaction ID: " + transactionId);
+                    Log.d(TAG, "Holder: " + holder);
+                    Log.d(TAG, "Due Date: " + dueDate);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error recording transaction: " + e.getMessage());

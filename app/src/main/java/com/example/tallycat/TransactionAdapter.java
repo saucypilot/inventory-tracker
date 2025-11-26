@@ -4,21 +4,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import androidx.annotation.NonNull;import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.Timestamp;
-
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Binds a list of Transaction objects to the RecyclerView in DashboardActivity.
- */
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
-
     private final List<Transaction> transactionList;
-    // Convert timestamps to string.
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.getDefault());
 
     public TransactionAdapter(List<Transaction> transactionList) {
@@ -36,13 +30,24 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
         Transaction transaction = transactionList.get(position);
 
-        // Populate the views with data from the transaction object
+        // Populate the views with data
         holder.tvItemName.setText(transaction.getName());
 
-        String details = transaction.getTransactionType() + " by " + transaction.getEmail();
+        // Build details string
+        String details = transaction.getTransactionType().toUpperCase() + " by " + transaction.getEmail();
+        if (transaction.getHolder() != null && !transaction.getHolder().isEmpty()) {
+            details += "\nHolder: " + transaction.getHolder();
+        }
+        if (transaction.getDueDate() != null && !transaction.getDueDate().isEmpty()) {
+            details += "\nDue: " + transaction.getDueDate();
+        }
+        if (transaction.getTransactionId() != null && !transaction.getTransactionId().isEmpty()) {
+            details += "\nTxn ID: " + transaction.getTransactionId().substring(0, 8) + "...";
+        }
+
         holder.tvDetails.setText(details);
 
-        // Safely format the timestamp
+        // Format timestamp
         Timestamp timestamp = transaction.getTimestamp();
         if (timestamp != null) {
             holder.tvTimestamp.setText(dateFormat.format(timestamp.toDate()));
@@ -56,9 +61,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return transactionList != null ? transactionList.size() : 0;
     }
 
-    /**
-     * ViewHolder that holds the UI components for a single row.
-     */
     static class TransactionViewHolder extends RecyclerView.ViewHolder {
         TextView tvItemName, tvDetails, tvTimestamp;
 

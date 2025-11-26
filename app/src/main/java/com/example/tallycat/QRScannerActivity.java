@@ -121,10 +121,10 @@ public class QRScannerActivity extends AppCompatActivity {
         String currentStatus = item.getStatus();
         String newStatus;
         String transactionType;
-        String holder = null;
-        String dueDate = null;
 
-        // Get current user email as holder
+        final String holder;
+        final String dueDate;
+
         String currentUserEmail = mAuth.getCurrentUser() != null ?
                 mAuth.getCurrentUser().getEmail() : "Unknown User";
 
@@ -132,25 +132,23 @@ public class QRScannerActivity extends AppCompatActivity {
             newStatus = "Checked Out";
             transactionType = "checkout";
             holder = currentUserEmail;
-            dueDate = calculateDueDate(); // Set due date for checkouts
+            dueDate = calculateDueDate();
         } else if ("Checked Out".equalsIgnoreCase(currentStatus)) {
             newStatus = "Available";
             transactionType = "return";
-            // Clear holder and due date when returning
             holder = null;
             dueDate = null;
         } else {
-            // Default to Available if status is unknown
             newStatus = "Available";
             transactionType = "return";
             holder = null;
             dueDate = null;
         }
 
-        // Generate unique transaction ID
-        String transactionId = UUID.randomUUID().toString();
+        final String transactionId = UUID.randomUUID().toString();
+        final String finalTransactionType = transactionType;
+        final Item finalItem = item;
 
-        // Update item in Firestore
         HashMap<String, Object> updateData = new HashMap<>();
         updateData.put("status", newStatus);
 
@@ -169,13 +167,11 @@ public class QRScannerActivity extends AppCompatActivity {
         db.collection("inventory").document(item.getItemId())
                 .update(updateData)
                 .addOnSuccessListener(unused -> {
-                    recordTransaction(item, transactionType, transactionId, holder, dueDate);
+                    recordTransaction(finalItem, finalTransactionType, transactionId, holder, dueDate);
 
-                    // Create detailed success message
-                    String message = createSuccessMessage(item, transactionType, transactionId, holder, dueDate);
+                    String message = createSuccessMessage(finalItem, finalTransactionType, transactionId, holder, dueDate);
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
-                    // Navigate back to previous screen
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("SCAN_RESULT", message);
                     setResult(RESULT_OK, resultIntent);
@@ -188,7 +184,6 @@ public class QRScannerActivity extends AppCompatActivity {
     }
 
     private String calculateDueDate() {
-        // Set due date to 7 days from now
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         long oneWeekInMillis = 7 * 24 * 60 * 60 * 1000L;
         Date dueDate = new Date(System.currentTimeMillis() + oneWeekInMillis);
@@ -217,7 +212,6 @@ public class QRScannerActivity extends AppCompatActivity {
         String userEmail = mAuth.getCurrentUser() != null ?
                 mAuth.getCurrentUser().getEmail() : "Unknown User";
 
-        // Create transaction data
         HashMap<String, Object> transaction = new HashMap<>();
         transaction.put("transactionId", transactionId);
         transaction.put("itemId", item.getItemId());
@@ -228,7 +222,6 @@ public class QRScannerActivity extends AppCompatActivity {
         transaction.put("dueDate", dueDate);
         transaction.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
 
-        // Add to transactions collection
         db.collection("transactions").add(transaction)
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "Transaction recorded: " + documentReference.getId());

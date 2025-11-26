@@ -80,7 +80,6 @@ public class CheckoutReminderService extends Service {
 
             Calendar returnCalendar = Calendar.getInstance();
             returnCalendar.setTime(checkoutTime.toDate());
-
             // Set to the return time on the same day as checkout
             returnCalendar.set(Calendar.HOUR_OF_DAY, returnHour);
             returnCalendar.set(Calendar.MINUTE, returnMinute);
@@ -107,21 +106,18 @@ public class CheckoutReminderService extends Service {
 
             long delay = returnTime - currentTime;
 
-            Log.d(TAG, "Scheduling return reminder for " + itemName +
-                    " at " + finalReturnTimeString + " (in " + delay + " ms)");
+            Log.d(TAG, "Scheduling return reminder for " + itemName + " at " + finalReturnTimeString + " (in " + delay + " ms)");
 
             // Schedule notification for the return time
             new android.os.Handler(getMainLooper()).postDelayed(() -> {
                 Log.d(TAG, "Executing scheduled reminder for: " + finalItemName);
                 try {
-                    NotificationHelper.showReturnReminder(CheckoutReminderService.this,
-                            finalItemName, finalReturnTimeString, checkoutTimeString);
+                    NotificationHelper.showReturnReminder(CheckoutReminderService.this, finalItemName, finalReturnTimeString, checkoutTimeString);
                     Log.d(TAG, "Notification sent successfully for: " + finalItemName);
                 } catch (Exception e) {
                     Log.e(TAG, "Error showing notification: " + e.getMessage());
                 }
             }, delay);
-
         } catch (Exception e) {
             Log.e(TAG, "Error scheduling return reminder: " + e.getMessage());
         }

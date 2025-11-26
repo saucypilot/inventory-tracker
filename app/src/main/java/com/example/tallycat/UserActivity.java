@@ -28,6 +28,8 @@ public class UserActivity extends AppCompatActivity {
         // Start the reminder service
         startReminderService();
 
+        startNotificationListenerService();
+
         // Initialize views
         switchNotifications = findViewById(R.id.switchNotifications);
         Button signOut = findViewById(R.id.btnSignOut);
@@ -90,6 +92,20 @@ public class UserActivity extends AppCompatActivity {
             Log.d("UserActivity", "Reminder service started successfully");
         } catch (Exception e) {
             Log.e("UserActivity", "Failed to start reminder service: " + e.getMessage());
+        }
+    }
+
+    private void startNotificationListenerService() {
+        try {
+            Intent serviceIntent = new Intent(this, NotificationListenerService.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent);
+            } else {
+                startService(serviceIntent);
+            }
+            Log.d("UserActivity", "Notification listener service started");
+        } catch (Exception e) {
+            Log.e("UserActivity", "Failed to start notification listener service: " + e.getMessage());
         }
     }
 }

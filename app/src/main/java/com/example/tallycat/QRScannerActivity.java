@@ -122,27 +122,18 @@ public class QRScannerActivity extends AppCompatActivity {
         String newStatus;
         String transactionType;
 
-        final String holder;
-        final String dueDate;
-
         String currentUserEmail = mAuth.getCurrentUser() != null ?
                 mAuth.getCurrentUser().getEmail() : "Unknown User";
 
         if ("Available".equalsIgnoreCase(currentStatus)) {
             newStatus = "Checked Out";
             transactionType = "checkout";
-            holder = currentUserEmail;
-            dueDate = calculateDueDate();
         } else if ("Checked Out".equalsIgnoreCase(currentStatus)) {
             newStatus = "Available";
             transactionType = "return";
-            holder = null;
-            dueDate = null;
         } else {
             newStatus = "Available";
             transactionType = "return";
-            holder = null;
-            dueDate = null;
         }
 
         final String transactionId = UUID.randomUUID().toString();
@@ -152,24 +143,20 @@ public class QRScannerActivity extends AppCompatActivity {
         HashMap<String, Object> updateData = new HashMap<>();
         updateData.put("status", newStatus);
 
-        if (holder != null) {
-            updateData.put("holder", holder);
+        if ("checkout".equals(transactionType)) {
+            updateData.put("holder", currentUserEmail);
+            updateData.put("dueDate", calculateDueDate());
         } else {
             updateData.put("holder", null);
-        }
-
-        if (dueDate != null) {
-            updateData.put("dueDate", dueDate);
-        } else {
             updateData.put("dueDate", null);
         }
 
         db.collection("inventory").document(item.getItemId())
                 .update(updateData)
                 .addOnSuccessListener(unused -> {
-                    recordTransaction(finalItem, finalTransactionType, transactionId, holder, dueDate);
+                    recordTransaction(finalItem, finalTransactionType, transactionId);
 
-                    String message = createSuccessMessage(finalItem, finalTransactionType, transactionId, holder, dueDate);
+                    String message = createSuccessMessage(finalItem, finalTransactionType, transactionId, currentUserEmail);
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
                     Intent resultIntent = new Intent();
@@ -190,7 +177,7 @@ public class QRScannerActivity extends AppCompatActivity {
         return sdf.format(dueDate);
     }
 
-    private String createSuccessMessage(Item item, String transactionType, String transactionId, String holder, String dueDate) {
+    private String createSuccessMessage(Item item, String transactionType, String transactionId, String userEmail) {
         StringBuilder message = new StringBuilder();
 
         message.append("✓ ").append(transactionType.toUpperCase()).append(" SUCCESSFUL!\n");
@@ -198,8 +185,8 @@ public class QRScannerActivity extends AppCompatActivity {
         message.append("Transaction ID: ").append(transactionId.substring(0, 8)).append("...\n");
 
         if ("checkout".equals(transactionType)) {
-            message.append("Holder: ").append(holder).append("\n");
-            message.append("Due Date: ").append(dueDate).append("\n");
+            message.append("Holder: ").append(userEmail).append("\n");
+            message.append("Due Date: ").append(calculateDueDate()).append("\n");
             message.append("Status: Checked Out");
         } else {
             message.append("Status: Available");
@@ -208,29 +195,55 @@ public class QRScannerActivity extends AppCompatActivity {
         return message.toString();
     }
 
-    private void recordTransaction(Item item, String transactionType, String transactionId, String holder, String dueDate) {
+    private void recordTransaction(Item item, String transactionType, String transactionId) {
         String userEmail = mAuth.getCurrentUser() != null ?
                 mAuth.getCurrentUser().getEmail() : "Unknown User";
 
         HashMap<String, Object> transaction = new HashMap<>();
         transaction.put("transactionId", transactionId);
+        transaction.put("transactionType", transactionType);
         transaction.put("itemId", item.getItemId());
         transaction.put("name", item.getName());
         transaction.put("email", userEmail);
-        transaction.put("transactionType", transactionType);
-        transaction.put("holder", holder);
-        transaction.put("dueDate", dueDate);
-        transaction.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
 
-        db.collection("transactions").add(transaction)
+        Log.d(TAG, "Recording transaction with basic fields:");
+        Log.d(TAG, "transactionId: " + transactionId);
+        Log.d(TAG, "transactionType: " + transactionType);
+        Log.d(TAG, "itemId: " + item.getItemId());
+        Log.d(TAG, "name: " + item.getName());
+        Log.d(TAG, "email: " + userEmail);
+
+        db.collection("transactions")
+                .add(transaction)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Transaction recorded: " + documentReference.getId());
-                    Log.d(TAG, "Transaction ID: " + transactionId);
-                    Log.d(TAG, "Holder: " + holder);
-                    Log.d(TAG, "Due Date: " + dueDate);
+                    Log.d(TAG, "Transaction successfully recorded with ID: " + documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error recording transaction: " + e.getMessage());
+                    recordTransactionAlternative(item, transactionType, transactionId, userEmail);
                 });
+    }
+
+    // Alternative method using Transaction object if HashMap approach fails
+    private void recordTransactionAlternative(Item item, String transactionType, String transactionId, String userEmail) {
+        try {
+            Transaction transaction = new Transaction();
+            transaction.setTransactionId(transactionId);
+            transaction.setTransactionType(transactionType);
+            transaction.setItemId(item.getItemId());
+            transaction.setName(item.getName());
+            transaction.setEmail(userEmail);
+
+            db.collection("transactions")
+                    .add(transaction)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "Transaction recorded successfully using Transaction object");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to record transaction with both methods: " + e.getMessage());
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, "Error creating Transaction object: " + e.getMessage());
+        }
     }
 }

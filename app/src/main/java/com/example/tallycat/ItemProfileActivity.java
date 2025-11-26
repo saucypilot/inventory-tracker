@@ -57,6 +57,11 @@ public class ItemProfileActivity extends AppCompatActivity {
             finish(); // Close the activity if there's no data
         }
 
+        btnQRScan.setOnClickListener(v -> {
+            Intent intent = new Intent(this, QRScannerActivity.class);
+            startActivity(intent);
+        });
+
         // Set up QR Scan button click listener
         btnQRScan.setOnClickListener(v -> {
             if (currentItem != null) {

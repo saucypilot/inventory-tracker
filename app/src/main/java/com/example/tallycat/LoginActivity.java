@@ -76,6 +76,23 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class)));
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // If a user is already signed in, skip login screen
+        if (mAuth.getCurrentUser() != null) {
+            String uid = mAuth.getCurrentUser().getUid();
+            db.collection("users").document(uid).get()
+                    .addOnSuccessListener(this::routeByRole)
+                    .addOnFailureListener(e ->
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to load profile: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show());
+        }
+    }
+
+
     // thod to request notification permission
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

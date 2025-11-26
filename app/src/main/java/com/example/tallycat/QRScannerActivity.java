@@ -14,6 +14,13 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.DocumentReference;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.Date;
+import java.util.Calendar;
 
 public class QRScannerActivity extends AppCompatActivity {
 
@@ -118,7 +125,7 @@ public class QRScannerActivity extends AppCompatActivity {
                             // Ensure itemId is set so it isn't null later
                             item.setItemId(itemId);
 
-                            toggleItemStatus(item);
+                            processItemUpdate(item); //Calls new method for all or nothing upload
                         } else {
                             Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
                             finish();
@@ -134,8 +141,66 @@ public class QRScannerActivity extends AppCompatActivity {
                 });
     }
 
+    //New method. all or nothing update, sets transactionId in addition to previous data.
+    private void processItemUpdate(Item item) {
+        String userEmail = mAuth.getCurrentUser() != null ?
+                mAuth.getCurrentUser().getEmail() : "Unknown User";
 
-    private void toggleItemStatus(Item item) {
+        // 1. Prepare the WriteBatch and all necessary references
+        WriteBatch batch = db.batch();
+        DocumentReference itemDocRef = db.collection("inventory").document(item.getItemId());
+
+        // Generate a UNIQUE transaction ID on the client
+        String newTransactionId = UUID.randomUUID().toString();
+        DocumentReference transactionDocRef = db.collection("transactions").document(newTransactionId);
+
+        // 2. Determine the transaction type and prepare data
+        String transactionType;
+        Map<String, Object> itemUpdates = new HashMap<>();
+
+        if ("Available".equalsIgnoreCase(item.getStatus())) {
+            transactionType = "checkout";
+            // Also update holder and due date for a checkout
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DAY_OF_YEAR, 14); // 14-day due date
+            itemUpdates.put("status", "Checked Out");
+            itemUpdates.put("holder", userEmail);
+            itemUpdates.put("dueDate", cal.getTime());
+        } else {
+            transactionType = "return";
+            // Clear holder and due date for a return
+            itemUpdates.put("status", "Available");
+            itemUpdates.put("holder", null);
+            itemUpdates.put("dueDate", null);
+        }
+
+        // 3. Stage the operations in the batch
+
+        // Operation A: Update the inventory item
+        batch.update(itemDocRef, itemUpdates);
+
+        // Operation B: Create the new transaction object
+        Transaction transaction = new Transaction();
+        transaction.setTransactionId(newTransactionId); // Set the unique ID
+        transaction.setItemId(item.getItemId());
+        transaction.setName(item.getName());
+        transaction.setEmail(userEmail);
+        transaction.setTransactionType(transactionType);
+        // The 'timestamp' field is left null; Firestore will populate it on the server.
+
+        // Stage the creation of the new transaction document
+        batch.set(transactionDocRef, transaction);
+
+        // 4. Commit the atomic batch operation
+        batch.commit().addOnSuccessListener(unused -> {
+            Toast.makeText(this, "Item " + transactionType + " successful!", Toast.LENGTH_SHORT).show();
+            finish();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        });
+    }
+    /*private void toggleItemStatus(Item item) {
         String currentStatus = item.getStatus();
         String newStatus;
         String transactionType;
@@ -164,9 +229,9 @@ public class QRScannerActivity extends AppCompatActivity {
                     Toast.makeText(this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     finish();
                 });
-    }
+    }*/
 
-    private void recordTransaction(Item item, String transactionType) {
+    /*private void recordTransaction(Item item, String transactionType) {
         String userEmail = mAuth.getCurrentUser() != null ?
                 mAuth.getCurrentUser().getEmail() : "Unknown User";
 
@@ -178,5 +243,5 @@ public class QRScannerActivity extends AppCompatActivity {
         // timestamp will be automatically set by @ServerTimestamp
 
         db.collection("transactions").add(transaction);
-    }
+    }*/
 }

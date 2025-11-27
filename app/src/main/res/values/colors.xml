@@ -15,6 +15,7 @@
     <color name="muted_light">#6B7280</color>
     <color name="muted_dark">#9CA3AF</color>
     <color name="red">#F44336</color>
+    <color name="my_orange">#FF7A00</color>
 
     <color name="gray">#FF666666</color>
     <color name="light_gray">#FF999999</color>

@@ -1,294 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_light"
         android:orientation="vertical"
         android:padding="20dp">
 
+        <!-- TITLE -->
         <TextView
             android:id="@+id/admin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="299dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/abril_fatface"
-            android:paddingBottom="12dp"
-            android:text="Admin"
+            android:text="Admin Dashboard"
             android:textColor="#000000"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="-20dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/admin" />
-
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="#00000000"
-            android:fontFamily="sans-serif"
-            android:paddingVertical="12dp"
-            android:text="Add Item"
-            android:textAlignment="viewStart"
-            android:textColor="#050505"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnAdd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnAdd"
-            app:srcCompat="@drawable/arrow" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
-
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="#00FFFFFF"
-            android:fontFamily="sans-serif"
-            android:paddingVertical="12dp"
-            android:text="Edit Item"
-            android:textAlignment="viewStart"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider2" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnEdit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnEdit"
-            app:srcCompat="@drawable/arrow" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnEdit" />
-
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="#00FFFFFF"
-            android:fontFamily="sans-serif"
-            android:paddingVertical="12dp"
-            android:text="Delete Item"
-            android:textAlignment="viewStart"
-            android:textColor="#181616"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider3" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnDelete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnDelete"
-            app:srcCompat="@drawable/arrow" />
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnDelete" />
-
-        <Button
+        <!-- SEARCH CARD -->
+        <LinearLayout
             android:id="@+id/btnSearch"
-            android:layout_width="0dp"
+            android:layout_width="372dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="#00FFFFFF"
-            android:fontFamily="sans-serif"
-            android:paddingVertical="12dp"
-            android:text="Search"
-            android:textAlignment="viewStart"
-            android:textColor="#181616"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/ripple_signout"
+            android:elevation="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:rotation="0"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:translationZ="4dp"
+            app:backgroundTint="#FF7A00">
 
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnSearch"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnSearch"
-            app:srcCompat="@drawable/arrow" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="search icon"
+                android:src="@drawable/ic_search"
+                app:tint="#FFFFFF" />
 
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnSearch" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="Search Items"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnViewData"
-            android:layout_width="0dp"
+        <!-- ROW 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="#00FFFFFF"
-            android:fontFamily="sans-serif"
-            android:paddingVertical="12dp"
-            android:text="View Data"
-            android:textAlignment="viewStart"
-            android:textColor="#181616"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider5" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnViewData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnViewData"
-            app:srcCompat="@drawable/arrow" />
+            <!-- ADD -->
+            <LinearLayout
+                android:id="@+id/btnAdd"
+                style="@style/DashboardCard"
+                android:layout_weight="1"
+                android:layout_width="0dp">
 
-        <View
-            android:id="@+id/divider6"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnViewData" />
+                <ImageView
+                    style="@style/DashboardIcon"
+                    android:src="@drawable/ic_add"
+                    app:tint="#FF7A00"
+                    android:contentDescription="add"/>
 
+                <TextView
+                    style="@style/DashboardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Item"
+                    android:textSize="14sp"
+                    android:textColor="#FF7A00"/>
+            </LinearLayout>
+
+            <!-- DELETE -->
+            <LinearLayout
+                android:id="@+id/btnDelete"
+                style="@style/DashboardCard"
+                android:layout_weight="1"
+                android:layout_width="0dp">
+
+                <ImageView
+                    style="@style/DashboardIcon"
+                    android:src="@drawable/ic_delete"
+                    app:tint="#FF7A00"
+                    android:contentDescription="delete"/>
+
+                <TextView
+                    style="@style/DashboardText"
+                    android:text="Delete Item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#FF7A00"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- ROW 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- VIEW -->
+            <LinearLayout
+                android:id="@+id/btnViewData"
+                style="@style/DashboardCard"
+                android:layout_weight="1"
+                android:layout_width="0dp">
+
+                <ImageView
+                    style="@style/DashboardIcon"
+                    android:src="@drawable/ic_view"
+                    app:tint="#FF7A00"
+                    android:contentDescription="view"/>
+
+                <TextView
+                    style="@style/DashboardText"
+                    android:text="View Items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#FF7A00"/>
+            </LinearLayout>
+
+            <!-- EDIT -->
+            <LinearLayout
+                android:id="@+id/btnEdit"
+                style="@style/DashboardCard"
+                android:layout_weight="1"
+                android:layout_width="0dp">
+
+                <ImageView
+                    style="@style/DashboardIcon"
+                    android:src="@drawable/ic_edit"
+                    app:tint="#FF7A00"
+                    android:contentDescription="edit"/>
+
+                <TextView
+                    style="@style/DashboardText"
+                    android:text="Edit Item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#FF7A00"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <!-- NOTIFICATION ROW -->
+        <LinearLayout
+            android:id="@+id/btnNotificationSettings"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="#FFFFFF"
+            android:layout_marginTop="22dp"
+            android:padding="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:elevation="4dp">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_notify"
+                app:tint="#FF7A00"
+                android:contentDescription="notification settings"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Notification Settings"
+                android:textSize="14sp"
+                android:layout_marginStart="12dp"
+                android:textColor="#FF7A00"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=">"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FF7A00"/>
+
+        </LinearLayout>
+
+        <!-- SIGN OUT -->
         <Button
             android:id="@+id/btnSignOut"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="455dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/red"
-            android:fontFamily="@font/alice"
+            android:layout_marginTop="32dp"
+
+            android:gravity="center"
             android:text="Sign Out"
-            android:textSize="14sp"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider6"
-            app:layout_constraintVertical_bias="1.0" />
+            android:elevation="8dp"
+            android:translationZ="4dp"
+            app:backgroundTint="#FF7A00" />
 
-        <View
-            android:id="@+id/divider7"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="#D1D1D1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnViewData" />
 
-        <Button
-            android:id="@+id/btnNotificationSettings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="#00FFFFFF"
-            android:fontFamily="sans-serif"
-            android:paddingVertical="12dp"
-            android:text="Notification Settings"
-            android:textAlignment="viewStart"
-            android:textColor="#181616"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider7" />
-
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnNotificationSettings"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnNotificationSettings"
-            app:srcCompat="@drawable/arrow" />
-
-        <View
-            android:id="@+id/divider8"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginEnd="-20dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnNotificationSettings" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </ScrollView>

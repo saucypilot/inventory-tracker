@@ -92,6 +92,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+        <activity android:name=".NotificationListActivity" />
+
         <!-- Fonts -->
         <meta-data
             android:name="preloaded_fonts"

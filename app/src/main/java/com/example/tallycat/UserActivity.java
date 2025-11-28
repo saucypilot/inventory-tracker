@@ -57,6 +57,13 @@ public class UserActivity extends AppCompatActivity {
             Intent intent = new Intent(UserActivity.this, SearchActivity.class);
             startActivity(intent);
         });
+
+        Button btnViewAll = findViewById(R.id.btnViewAllNotifications);
+        btnViewAll.setOnClickListener(v -> {
+            startActivity(new Intent(UserActivity.this, NotificationListActivity.class));
+        });
+
+
     }
 
     private void loadNotificationPreference() {

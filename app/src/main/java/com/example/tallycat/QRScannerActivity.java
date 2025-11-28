@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Date;
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class QRScannerActivity extends AppCompatActivity {
 
@@ -122,23 +124,25 @@ public class QRScannerActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Item item = documentSnapshot.toObject(Item.class);
                         if (item != null) {
-                            // Ensure itemId is set so it isn't null later
-                            item.setItemId(itemId);
-
-                            processItemUpdate(item); //Calls new method for all or nothing upload
+                            item.setItemId(documentSnapshot.getId()); // Ensure ID is set
+                            // The item exists, proceed to update its status (checkout or return)
+                            processItemUpdate(item);
                         } else {
-                            Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
-                            finish();
+                            handleItemNotFound();
                         }
                     } else {
-                        Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
-                        finish();
+                        handleItemNotFound();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error fetching item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     finish();
                 });
+    }
+
+    private void handleItemNotFound() {
+        Toast.makeText(this, "Item not found in database.", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     //New method. all or nothing update, sets transactionId in addition to previous data.
@@ -146,57 +150,52 @@ public class QRScannerActivity extends AppCompatActivity {
         String userEmail = mAuth.getCurrentUser() != null ?
                 mAuth.getCurrentUser().getEmail() : "Unknown User";
 
-        // 1. Prepare the WriteBatch and all necessary references
         WriteBatch batch = db.batch();
         DocumentReference itemDocRef = db.collection("inventory").document(item.getItemId());
-
-        // Generate a UNIQUE transaction ID on the client
         String newTransactionId = UUID.randomUUID().toString();
         DocumentReference transactionDocRef = db.collection("transactions").document(newTransactionId);
 
-        // 2. Determine the transaction type and prepare data
         String transactionType;
         Map<String, Object> itemUpdates = new HashMap<>();
 
         if ("Available".equalsIgnoreCase(item.getStatus())) {
+            // --- THIS IS A CHECKOUT ---
             transactionType = "checkout";
-            // Also update holder and due date for a checkout
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DAY_OF_YEAR, 14); // 14-day due date
-            itemUpdates.put("status", "Checked Out");
+            cal.add(Calendar.DAY_OF_YEAR, 7); // Default 7-day checkout period
+            String dueDateString = dateFormat.format(cal.getTime());
+
+            itemUpdates.put("status", "Checked-out");
             itemUpdates.put("holder", userEmail);
-            itemUpdates.put("dueDate", cal.getTime());
+            itemUpdates.put("dueDate", dueDateString); // Must be a string
+
         } else {
+            // --- THIS IS A RETURN ---
             transactionType = "return";
-            // Clear holder and due date for a return
             itemUpdates.put("status", "Available");
-            itemUpdates.put("holder", null);
-            itemUpdates.put("dueDate", null);
+            itemUpdates.put("holder", null); // Use null to clear the field in Firestore
+            itemUpdates.put("dueDate", null); // Use null to clear the field in Firestore
         }
 
-        // 3. Stage the operations in the batch
-
-        // Operation A: Update the inventory item
+        // Stage the item update
         batch.update(itemDocRef, itemUpdates);
 
-        // Operation B: Create the new transaction object
+        // Stage the new transaction record
         Transaction transaction = new Transaction();
-        transaction.setTransactionId(newTransactionId); // Set the unique ID
+        transaction.setTransactionId(newTransactionId);
         transaction.setItemId(item.getItemId());
         transaction.setName(item.getName());
         transaction.setEmail(userEmail);
         transaction.setTransactionType(transactionType);
-        // The 'timestamp' field is left null; Firestore will populate it on the server.
-
-        // Stage the creation of the new transaction document
         batch.set(transactionDocRef, transaction);
 
-        // 4. Commit the atomic batch operation
+        // Commit both operations
         batch.commit().addOnSuccessListener(unused -> {
             Toast.makeText(this, "Item " + transactionType + " successful!", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Update failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
             finish();
         });
     }

@@ -68,7 +68,7 @@
                 android:stateListAnimator="@null"
                 android:text="Admin"
                 android:textAllCaps="false"
-                android:textColor="@color/primary"
+                android:textColor="@color/my_orange"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -131,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="@color/my_orange"
             android:fontFamily="@font/alice"
             android:text="Create Account"
             android:textColor="@android:color/white" />

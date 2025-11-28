@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/abril_fatface"
-            android:textColor="@android:color/black"
+            android:textColor="@color/my_orange"
             android:textSize="28sp"
             android:textStyle="bold"
             tools:text="Item Name" />

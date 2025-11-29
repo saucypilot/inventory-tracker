@@ -1,5 +1,6 @@
 package com.example.tallycat;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import java.util.Locale;
 
 public class CheckoutReminderService extends Service {
     private static final String TAG = "CheckoutReminderService";
+    private static final int FOREGROUND_SERVICE_ID = 1;
     private ListenerRegistration transactionListener;
     private FirebaseFirestore db;
     private SharedPreferences sharedPreferences;
@@ -23,6 +25,10 @@ public class CheckoutReminderService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Service onCreate - Starting checkout reminder service");
+
+        Notification notification = NotificationHelper.createForegroundNotification(this);
+        startForeground(FOREGROUND_SERVICE_ID, notification);
+
         db = FirebaseFirestore.getInstance();
         sharedPreferences = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
         createNotificationChannel();

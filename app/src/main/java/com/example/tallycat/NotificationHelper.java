@@ -1,5 +1,6 @@
 package com.example.tallycat;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -45,6 +46,21 @@ public class NotificationHelper {
                 Log.e(TAG, "Error creating notification channel: " + e.getMessage());
             }
         }
+    }
+
+    public static Notification createForegroundNotification(Context context) {
+        createNotificationChannel(context); // Ensure channel is created
+
+        Intent notificationIntent = new Intent(context, UserActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        return new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setContentTitle("Checkout Reminder Service")
+                .setContentText("Monitoring your item checkouts.")
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setContentIntent(pendingIntent)
+                .build();
     }
 
     // New method for return time reminders

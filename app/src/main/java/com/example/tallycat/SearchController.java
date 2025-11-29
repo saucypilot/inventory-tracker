@@ -29,23 +29,46 @@ public class SearchController {
      * Executes the search by invoking the data source and processing the result.
      */
     public void performSearch(String queryText, SearchResultListener listener) {
-        dataSource.findItemById(queryText).addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                if (task.getResult().isEmpty()) {
-                    // No documents were found matching the query
+        // Step 1: Try searching by exact Item ID first.
+        dataSource.findItemById(queryText).addOnCompleteListener(idTask -> {
+            if (idTask.isSuccessful() && idTask.getResult() != null && !idTask.getResult().isEmpty()) {
+                // SUCCESS: Found an item by its ID. This is the most direct match.
+                List<Item> searchResults = new ArrayList<>();
+                // Even though we get a list, it will only contain one item.
+                for (QueryDocumentSnapshot document : idTask.getResult()) {
+                    Item item = document.toObject(Item.class);
+                    item.setItemId(document.getId()); // Set the ID from the document
+                    searchResults.add(item);
+                }
+                listener.onSearchSuccess(searchResults);
+            } else {
+                // Step 2: If searching by ID fails or returns no results, try searching by name.
+                searchItemsByName(queryText, listener);
+            }
+        });
+    }
+
+    private void searchItemsByName(String queryText, SearchResultListener listener) {
+        dataSource.findItemsByName(queryText).addOnCompleteListener(nameTask -> {
+            if (nameTask.isSuccessful() && nameTask.getResult() != null) {
+                if (nameTask.getResult().isEmpty()) {
+                    // No documents found by ID or by name.
                     listener.onNoResultsFound();
                 } else {
-                    // Successfully found one or more documents
+                    // SUCCESS: Found one or more items by name.
                     List<Item> searchResults = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (QueryDocumentSnapshot document : nameTask.getResult()) {
                         Item item = document.toObject(Item.class);
+                        item.setItemId(document.getId()); // Set the ID from the document
                         searchResults.add(item);
                     }
                     listener.onSearchSuccess(searchResults);
                 }
             } else {
-                // The task failed
-                listener.onSearchFailure("Error performing search. Check logs for details.");
+                // The task itself failed (permissions, no network, etc.)
+                String errorMessage = nameTask.getException() != null ?
+                        nameTask.getException().getMessage() : "Search by name failed.";
+                listener.onSearchFailure(errorMessage);
             }
         });
     }

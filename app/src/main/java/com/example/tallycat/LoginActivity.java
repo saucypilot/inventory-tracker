@@ -154,6 +154,21 @@ public class LoginActivity extends AppCompatActivity {
         goToRole(role);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // If a user is already signed in, skip login screen
+        if (mAuth.getCurrentUser() != null) {
+            String uid = mAuth.getCurrentUser().getUid();
+            db.collection("users").document(uid).get()
+                    .addOnSuccessListener(this::routeByRole)
+                    .addOnFailureListener(e ->
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to load profile: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show());
+        }
+    }
     private void goToRole(String role) {
         Intent i = "admin".equalsIgnoreCase(role)
                 ? new Intent(this, AdminActivity.class)

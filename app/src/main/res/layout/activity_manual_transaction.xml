@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ManualCheckoutReturnActivity">
+
+    <!-- Added the Toolbar for the back button and title -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="Manual Transaction" />
+
+    <!-- Placed existing ScrollView below the Toolbar -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Item identity / live status -->
+            <TextView
+                android:id="@+id/tvManualName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item name"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvManualItemId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="ID: sample"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvManualStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Status: Available"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvManualHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Holder: -"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvManualDueDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Due date: -"
+                android:textSize="16sp" />
+
+            <!-- Editable fields -->
+            <EditText
+                android:id="@+id/etHolderEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Holder email"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/etDueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Due date (yyyy-MM-dd)"
+                android:inputType="text" />
+
+            <!-- Actions = choose checkout or return -->
+            <Button
+                android:id="@+id/btnManualCheckout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Checkout" />
+
+            <Button
+                android:id="@+id/btnManualReturn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Return" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
+

@@ -108,6 +108,18 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <!-- Manual Button -->
+        <Button
+            android:id="@+id/btnManualCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/alice"
+            android:text="Manual Checkout / Return"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
         <!-- Add this to your activity_item_profile.xml, after the scan button -->
         <Button
             android:id="@+id/btnViewQR"

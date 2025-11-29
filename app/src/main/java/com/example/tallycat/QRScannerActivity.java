@@ -178,6 +178,9 @@ public class QRScannerActivity extends AppCompatActivity {
             itemUpdates.put("dueDate", null); // Use null to clear the field in Firestore
         }
 
+        itemUpdates.put("name", item.getName());
+        itemUpdates.put("name_lowercase", item.getName_lowercase());
+
         // Stage the item update
         batch.update(itemDocRef, itemUpdates);
 

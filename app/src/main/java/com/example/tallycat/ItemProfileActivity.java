@@ -15,6 +15,7 @@ public class ItemProfileActivity extends AppCompatActivity {
     private TextView tvName, tvId, tvStatus, tvCategory, tvDescription;
     private ImageButton btnBack;
     private Button btnQRScan, btnViewQR; // ADDED: btnViewQR
+    private Button btnManualCheckout;
     private Item currentItem;
 
     @Override
@@ -25,6 +26,7 @@ public class ItemProfileActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnQRScan = findViewById(R.id.btnQRScan);
         btnViewQR = findViewById(R.id.btnViewQR); // ADDED: Initialize QR View button
+        btnManualCheckout = findViewById(R.id.btnManualCheckout);
 
         btnBack.setOnClickListener(v -> {
             finish();
@@ -78,6 +80,20 @@ public class ItemProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "Item data not available", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Set the click listener for the new button
+        btnManualCheckout.setOnClickListener(v -> {
+            if (currentItem != null) {
+                // Launch ManualCheckoutReturnActivity, passing the current item's data
+                Intent intent = new Intent(ItemProfileActivity.this, ManualCheckoutReturnActivity.class);
+                // Use the 'currentItem' field, which is guaranteed to be valid for the whole activity
+                intent.putExtra("EXTRA_ITEM", currentItem);
+                startActivity(intent);
+            } else {
+                // This is a safety check in case something goes wrong
+                Toast.makeText(this, "Item data not available.", Toast.LENGTH_SHORT).show();
             }
         });
     }

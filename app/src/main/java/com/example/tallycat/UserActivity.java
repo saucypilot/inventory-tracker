@@ -34,7 +34,6 @@ public class UserActivity extends AppCompatActivity {
         // Initialize views
         switchNotifications = findViewById(R.id.switchNotifications);
         Button signOut = findViewById(R.id.btnSignOut);
-        TextView tvLastCheckout = findViewById(R.id.tvLastCheckout);
 
         // Load saved state for notification toggle
         loadNotificationPreference();

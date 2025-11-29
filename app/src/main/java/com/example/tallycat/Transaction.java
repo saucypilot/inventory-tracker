@@ -13,7 +13,6 @@ public class Transaction {
     private String name;
     private String email;
 
-    @ServerTimestamp
     private Timestamp timestamp;
 
     // Public constructor
@@ -25,5 +24,14 @@ public class Transaction {
     public String getItemId() { return itemId; }
     public String getName() { return name; }
     public String getEmail() { return email; }
+    @ServerTimestamp
     public Timestamp getTimestamp() { return timestamp; }
+
+    // SETTERS (added for notification system)
+    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
+    public void setTransactionType(String transactionType) { this.transactionType = transactionType; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
+    public void setName(String name) { this.name = name; }
+    public void setEmail(String email) { this.email = email; }
+    public void setTimestamp(Timestamp timestamp) { this.timestamp = timestamp; }
 }

@@ -2,6 +2,7 @@ package com.example.tallycat;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,8 +36,16 @@ public class DashboardActivity extends AppCompatActivity {
         transactionList = new ArrayList<>();
         adapter = new TransactionAdapter(transactionList);
 
+        // BACK BUTTON: Initialize the back button
+        ImageButton btnBack = findViewById(R.id.btnBack7);
+
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
         rvTransactions.setAdapter(adapter);
+
+        // BACK BUTTON: Set click listener to go back when pressed
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
 
         // Fetch the data from Firestore when the activity is created
         fetchTransactions();

@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- ADDED: Camera permission for QR scanning -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- ADD THIS LINE for the dataSync foreground service type -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
 
     <application
         android:allowBackup="true"
@@ -28,7 +30,9 @@
             android:name=".CheckoutReminderService"
             android:enabled="true"
             android:exported="false"
-            android:stopWithTask="false" />
+            android:foregroundServiceType="dataSync"
+            android:stopWithTask="false"
+            tools:ignore="ForegroundServiceType" />
 
         <activity
             android:name=".ItemProfileActivity"

@@ -7,17 +7,18 @@
     tools:context=".ManualCheckoutReturnActivity">
 
     <!-- Added the Toolbar for the back button and title -->
+
+    <!-- Placed existing ScrollView below the Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/primary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Manual Transaction" />
 
-    <!-- Placed existing ScrollView below the Toolbar -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -93,6 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                app:backgroundTint="#FF7A00"
                 android:text="Checkout" />
 
             <Button
@@ -100,6 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                app:backgroundTint="#FF7A00"
                 android:text="Return" />
 
         </LinearLayout>

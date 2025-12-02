@@ -7,7 +7,10 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -25,25 +28,22 @@ public class UserActivity extends AppCompatActivity {
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
 
-        // Start the reminder service
-        startReminderService();
+        // MANUAL notifications listener (KEEP this)
+        listenForManualNotifications();
 
         // Initialize views
         switchNotifications = findViewById(R.id.switchNotifications);
         Button signOut = findViewById(R.id.btnSignOut);
-        TextView tvLastCheckout = findViewById(R.id.tvLastCheckout);
 
-        // Load notification preference
+        // Load saved state for notification toggle
         loadNotificationPreference();
 
-        // Set up notification toggle listener
-        switchNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveNotificationPreference(isChecked);
-            }
+        // Toggle listener
+        switchNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveNotificationPreference(isChecked);
         });
 
+        // Sign out button
         signOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, LoginActivity.class));
@@ -56,6 +56,13 @@ public class UserActivity extends AppCompatActivity {
             Intent intent = new Intent(UserActivity.this, SearchActivity.class);
             startActivity(intent);
         });
+
+        Button btnViewAll = findViewById(R.id.btnViewAllNotifications);
+        btnViewAll.setOnClickListener(v -> {
+            startActivity(new Intent(UserActivity.this, NotificationListActivity.class));
+        });
+
+
     }
 
     private void loadNotificationPreference() {
@@ -67,29 +74,34 @@ public class UserActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("notifications_enabled", enabled);
         editor.apply();
-
-        // Restart service when notification preference changes
-        if (enabled) {
-            startReminderService();
-        }
+        // No need to start any service here — the new system uses AlarmManager + Firestore listeners
     }
 
-    private void startReminderService() {
-        try {
-            Intent serviceIntent = new Intent(this, CheckoutReminderService.class);
+    // Manual notification listener (WORKS with Firestore manual notifications)
+    private void listenForManualNotifications() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-            // Stop any existing service first to ensure clean start
-            stopService(serviceIntent);
+        db.collection("notifications")
+                .whereEqualTo("userEmail", email)
+                .whereEqualTo("read", false)
+                .addSnapshotListener((snap, err) -> {
+                    if (snap == null || snap.isEmpty()) return;
 
-            // Start the service
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(serviceIntent);
-            } else {
-                startService(serviceIntent);
-            }
-            Log.d("UserActivity", "Reminder service started successfully");
-        } catch (Exception e) {
-            Log.e("UserActivity", "Failed to start reminder service: " + e.getMessage());
-        }
+                    snap.getDocumentChanges().forEach(change -> {
+                        String message = change.getDocument().getString("message");
+                        String item = change.getDocument().getString("itemName");
+
+                        NotificationHelper.showManualNotification(
+                                UserActivity.this,
+                                message,
+                                item
+                        );
+
+                        // Mark as read
+                        change.getDocument().getReference().update("read", true);
+                    });
+                });
     }
+
 }

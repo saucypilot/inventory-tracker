@@ -1,6 +1,5 @@
 package com.example.tallycat;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -46,21 +45,6 @@ public class NotificationHelper {
                 Log.e(TAG, "Error creating notification channel: " + e.getMessage());
             }
         }
-    }
-
-    public static Notification createForegroundNotification(Context context) {
-        createNotificationChannel(context); // Ensure channel is created
-
-        Intent notificationIntent = new Intent(context, UserActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                notificationIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        return new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setContentTitle("Checkout Reminder Service")
-                .setContentText("Monitoring your item checkouts.")
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentIntent(pendingIntent)
-                .build();
     }
 
     // New method for return time reminders
@@ -168,13 +152,14 @@ public class NotificationHelper {
                 Log.d(TAG, "Using default icon, custom icon not found");
             }
 
+            // FIX: Use the actual custom message in the notification
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(smallIcon)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_menu_info_details))
                     .setContentTitle("Return Item Reminder")
-                    .setContentText(itemName + " - Return Request")
+                    .setContentText(itemName) // Show item name in the content text
                     .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(message))
+                            .bigText(message)) // FIX: Use the custom message here
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
@@ -182,12 +167,11 @@ public class NotificationHelper {
                     .setVibrate(new long[]{0, 500, 200, 500})
                     .setDefaults(NotificationCompat.DEFAULT_ALL);
 
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (notificationManager != null) {
                 notificationManager.notify(NOTIFICATION_ID++, builder.build());
-                Log.d(TAG, "Manual notification shown successfully");
+                Log.d(TAG, "Manual notification shown successfully with custom message");
             } else {
                 Log.e(TAG, "NotificationManager is null");
             }
@@ -223,9 +207,10 @@ public class NotificationHelper {
         }
     }
 
-    // Test method to verify notifications work
+    /* Test method to verify notifications work
     public static void testNotification(Context context) {
         Log.d(TAG, "Testing notification system");
         showManualNotification(context, "This is a test notification to verify the system is working.", "Test Item");
     }
+    */
 }

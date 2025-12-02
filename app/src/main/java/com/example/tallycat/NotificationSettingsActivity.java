@@ -59,17 +59,16 @@ public class NotificationSettingsActivity extends AppCompatActivity {
         int hour = timePickerReturnTime.getHour();
         int minute = timePickerReturnTime.getMinute();
 
-        // Save to SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("return_time_hour", hour);
         editor.putInt("return_time_minute", minute);
         editor.apply();
 
-        // Format time for display
-        String timeString = formatTime(hour, minute);
+        DailyReminderScheduler.scheduleDailyReminder(this, hour, minute);
 
-        Toast.makeText(this, "Return time set to " + timeString, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Return time updated", Toast.LENGTH_SHORT).show();
     }
+
 
     private String formatTime(int hour, int minute) {
         String period = "AM";

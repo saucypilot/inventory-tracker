@@ -35,7 +35,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <!-- UPDATED: Notification Settings Card -->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardNotificationSettings"
         android:layout_width="match_parent"
@@ -106,34 +108,7 @@
         android:layout_below="@id/cardNotificationSettings"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Recent Activity"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvLastCheckout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No recent checkouts"
-                android:textColor="#666666"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+        app:cardElevation="4dp"/>
 
     <Button
         android:id="@+id/btnSignOut"
@@ -146,6 +121,19 @@
         android:fontFamily="@font/alice"
         android:text="Log Out"
         android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnViewAllNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="148dp"
+        android:backgroundTint="@color/primary"
+        android:fontFamily="@font/alice"
+        android:text="View All Notifications"
+        android:textAlignment="center"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

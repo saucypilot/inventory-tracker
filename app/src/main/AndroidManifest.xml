@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <!-- ADDED: Camera permission for QR scanning -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- ADD THIS LINE for the dataSync foreground service type -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <application
         android:allowBackup="true"
@@ -20,81 +20,95 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TallyCat">
 
+        <!-- DAILY REMINDER RECEIVER -->
+        <receiver
+            android:name=".DailyReminderReceiver"
+            android:exported="false" />
+
+        <!-- Services -->
         <service
             android:name=".ReminderService"
             android:enabled="true"
             android:exported="false" />
 
-        <!-- Add CheckoutReminderService -->
-        <service
-            android:name=".CheckoutReminderService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="dataSync"
-            android:stopWithTask="false"
-            tools:ignore="ForegroundServiceType" />
+        <!-- Activities -->
 
+        <!-- Item Profile -->
         <activity
             android:name=".ItemProfileActivity"
             android:exported="false" />
+
+        <!-- Search -->
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
-        <!-- Make LOGIN the launcher so both buttons work -->
+
+        <!-- LOGIN (MAIN LAUNCHER) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Create account screen -->
+
+        <!-- Create Account -->
         <activity android:name=".CreateAccountActivity" />
-        <!-- Post-login destinations -->
+
+        <!-- User + Admin Dashboards -->
         <activity android:name=".UserActivity" />
         <activity android:name=".AdminActivity" />
-        <!-- Admin ops -->
+
+        <!-- Admin Inventory Management -->
         <activity android:name=".AddInv" />
         <activity android:name=".EditInv" />
         <activity android:name=".DeleteInv" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+
+        <!-- Dashboard -->
         <activity
             android:name=".DashboardActivity"
             android:exported="false" />
 
-        <!-- NEW: Notification Activities -->
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <!-- NOTIFICATIONS -->
         <activity
             android:name=".NotificationSettingsActivity"
             android:exported="false" />
+
         <activity
             android:name=".ManualNotificationActivity"
             android:exported="false" />
 
-        <!-- ADDED: QR Scanner Activity -->
+        <activity android:name=".NotificationListActivity" />
+
+        <!-- QR SCANNING + DISPLAY -->
         <activity
             android:name=".QRScannerActivity"
             android:exported="false" />
 
-        <!-- ADDED: QR Display Activity -->
         <activity
             android:name=".QRDisplayActivity"
             android:exported="false" />
 
-        <!-- ADDED: QR Capture Activity (for portrait scanning) -->
         <activity
             android:name=".CaptureActivityPortrait"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+        <!-- Manual Checkout/Return -->
         <activity android:name=".ManualCheckoutReturnActivity" />
+
+        <!-- Fonts -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

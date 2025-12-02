@@ -3,6 +3,7 @@ package com.example.tallycat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.LinearLayout; //added this import
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -13,15 +14,16 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        Button btnGoAdd = findViewById(R.id.btnAdd);
-        Button btnGoEdit = findViewById(R.id.btnEdit);
-        Button btnGoDelete = findViewById(R.id.btnDelete);
-        Button btnSignOut = findViewById(R.id.btnSignOut);
-        Button btnGoSearch = findViewById(R.id.btnSearch);
-        Button viewDataButton = findViewById(R.id.btnViewData);
+        //Changed most buttons to LinearLayout to match activity_admin.xml
+        LinearLayout btnGoAdd = findViewById(R.id.btnAdd);
+        LinearLayout btnGoEdit = findViewById(R.id.btnEdit);
+        LinearLayout btnGoDelete = findViewById(R.id.btnDelete);
+        LinearLayout btnGoSearch = findViewById(R.id.btnSearch);
+        LinearLayout viewDataButton = findViewById(R.id.btnViewData);
+        Button btnSignOut = findViewById(R.id.btnSignOut); //still a button in the xml
 
         // Add the notification settings button - make sure this ID exists in your XML
-        Button btnNotificationSettings = findViewById(R.id.btnNotificationSettings);
+        LinearLayout btnNotificationSettings = findViewById(R.id.btnNotificationSettings);
 
         btnGoAdd.setOnClickListener(v ->
                 startActivity(new Intent(this, AddInv.class)));

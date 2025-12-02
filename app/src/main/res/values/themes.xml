@@ -6,4 +6,30 @@
     </style>
 
     <style name="Theme.TallyCat" parent="Base.Theme.TallyCat" />
+    <style name="DashboardCard">
+        <item name="android:layout_height">140dp</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/ripple_card</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:elevation">6dp</item>
+    </style>
+
+
+
+    <style name="DashboardIcon">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:tint">#FF7A00</item>
+    </style>
+
+    <style name="DashboardText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
 </resources>

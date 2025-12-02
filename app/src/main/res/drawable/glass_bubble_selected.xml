@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!-- Using your primary color for the selected state -->
-    <solid android:color="@color/primary" />
+    <solid android:color="@color/my_orange" />
 
     <!-- Rounded corners to make it bubble-like -->
     <corners android:radius="100dp" />
